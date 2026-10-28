@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\EnsureUserIsAdmin;
+use App\Http\Middleware\EnsureRole;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
@@ -18,14 +18,14 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-
     ->withMiddleware(function (Middleware $middleware) {
+        // alias واحد للأدوار: role:admin أو role:farmer
         $middleware->alias([
-            'admin' => EnsureUserIsAdmin::class,
+            'role' => EnsureRole::class,
         ]);
     })
-
     ->withExceptions(function (Exceptions $exceptions) {
+        // 404: سجل غير موجود
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             if (! $request->is('api/*')) {
                 return null;
