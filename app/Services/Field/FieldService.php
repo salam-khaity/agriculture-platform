@@ -44,10 +44,12 @@ class FieldService
 
     public function delete(Field $field): void
     {
-        $field->delete(); // Soft Delete
+        DB::transaction(function () use ($field) {
+            $field->plantProductions()->delete();
+            $field->delete();
+        });
     }
 
-    // قاعدة العمل: مجموع مساحات الحقول لا يتجاوز مساحة المزرعة
     private function ensureAreaFits(Farm $farm, float $newArea, ?int $ignoreFieldId = null): void
     {
         $usedArea = (float) $farm->fields()

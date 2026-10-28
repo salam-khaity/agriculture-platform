@@ -2,11 +2,14 @@
 
 namespace App\Services\Crop;
 
+use App\Enums\ProductionStatus;
 use App\Models\Crop;
+use App\Models\PlantProduction;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class CropService
 {
@@ -55,6 +58,14 @@ class CropService
 
     public function delete(Crop $crop): void
     {
+        if (PlantProduction::query()
+            ->where('crop_id', $crop->id)
+            ->where('status', ProductionStatus::Active->value)
+            ->exists()) {
+            throw ValidationException::withMessages([
+                'crop' => 'This crop is used by an active production and cannot be deleted.',
+            ]);
+        }
         DB::transaction(function () use ($crop) {
             $crop->varieties()->delete();
             $crop->growthStages()->delete();

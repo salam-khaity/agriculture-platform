@@ -3,6 +3,7 @@
 namespace App\Services\Farm;
 
 use App\Models\Farm;
+use App\Models\PlantProduction;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -45,6 +46,7 @@ class FarmService
     public function delete(Farm $farm): void
     {
         DB::transaction(function () use ($farm) {
+            PlantProduction::query()->whereIn('field_id', $farm->fields()->select('id'))->delete();
             $farm->fields()->delete();
             $farm->delete();
         });

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Crop;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class CropVarietyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'crop_id' => Crop::factory(),
+            'name'    => fake()->unique()->words(2, true),
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Concerns\HasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Field extends Model
@@ -39,4 +40,10 @@ class Field extends Model
     {
         return $this->farm->user_id;
     }
+
+    public function plantProductions(): HasMany
+    {
+        return $this->hasMany(PlantProduction::class);
+    }
+
 }

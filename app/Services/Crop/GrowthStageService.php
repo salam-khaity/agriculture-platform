@@ -2,10 +2,13 @@
 
 namespace App\Services\Crop;
 
+use App\Enums\ProductionStatus;
 use App\Models\Crop;
 use App\Models\GrowthStage;
+use App\Models\PlantProduction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class GrowthStageService
 {
@@ -56,8 +59,17 @@ class GrowthStageService
 
     public function delete(GrowthStage $stage): void
     {
-        // TODO (plant_productions step): block deleting a stage that is currently in use
         DB::transaction(function () use ($stage) {
+
+            if (PlantProduction::query()
+                ->where('growth_stage_id', $stage->id)
+                ->where('status', ProductionStatus::Active->value)
+                ->exists()) {
+                throw ValidationException::withMessages([
+                    'growth_stage' => 'This growth stage is used by an active production and cannot be deleted.',
+                ]);
+            }
+
             Crop::query()->lockForUpdate()->findOrFail($stage->crop_id);
 
             $stage->delete();
