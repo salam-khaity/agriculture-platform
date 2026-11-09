@@ -3,6 +3,7 @@
 namespace Tests\Feature\Farmer;
 
 use App\Models\Farm;
+use App\Models\Field;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -61,4 +62,42 @@ class FarmTest extends TestCase
             ->getJson("/api/v1/farmer/farms/{$other->id}")
             ->assertForbidden();
     }
+
+    public function test_farm_defaults_to_plant_activity(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user, 'sanctum')
+            ->postJson('/api/v1/farmer/farms', [
+                'name' => 'Default Farm', 'latitude' => 33.5, 'longitude' => 36.3, 'area' => 10,
+            ])
+            ->assertCreated()
+            ->assertJsonPath('data.activity_type', 'plant');
+    }
+
+    public function test_activity_type_must_be_valid(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user, 'sanctum')
+            ->postJson('/api/v1/farmer/farms', [
+                'name' => 'Bad Farm', 'latitude' => 33.5, 'longitude' => 36.3, 'area' => 10,
+                'activity_type' => 'fish',
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('activity_type');
+    }
+
+    public function test_farm_area_cannot_be_less_than_fields_total(): void
+    {
+        $user = User::factory()->create();
+        $farm = Farm::factory()->create(['user_id' => $user->id, 'area' => 50]);
+        Field::factory()->create(['farm_id' => $farm->id, 'area' => 30]);
+
+        $this->actingAs($user, 'sanctum')
+            ->patchJson("/api/v1/farmer/farms/{$farm->id}", ['area' => 20])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('area');
+    }
+
 }

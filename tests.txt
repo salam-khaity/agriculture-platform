@@ -1,0 +1,29 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Available tests:
+ - Tests\Unit\ExampleTest::test_that_true_is_true
+ - Tests\Feature\Admin\CropCatalogTest::test_admin_can_create_crop
+ - Tests\Feature\Admin\CropCatalogTest::test_non_admin_cannot_create_crop
+ - Tests\Feature\Admin\CropCatalogTest::test_crop_name_must_be_unique
+ - Tests\Feature\Admin\CropCatalogTest::test_growth_stage_without_order_is_appended_last
+ - Tests\Feature\Admin\CropCatalogTest::test_farmer_sees_only_active_crops
+ - Tests\Feature\Admin\CropCatalogTest::test_inserting_a_stage_in_the_middle_shifts_the_following_ones
+ - Tests\Feature\Admin\CropCatalogTest::test_deleting_a_stage_closes_the_gap
+ - Tests\Feature\ExampleTest::test_the_application_returns_a_successful_response
+ - Tests\Feature\Farmer\FarmTest::test_farmer_can_create_farm
+ - Tests\Feature\Farmer\FarmTest::test_farmer_can_delete_farm
+ - Tests\Feature\Farmer\FarmTest::test_show_returns_not_found_message_for_missing_farm
+ - Tests\Feature\Farmer\FarmTest::test_farmer_cannot_view_another_farmers_farm
+ - Tests\Feature\Farmer\FieldMediaTest::test_farmer_can_upload_and_delete_field_media
+ - Tests\Feature\Farmer\FieldMediaTest::test_farmer_cannot_upload_to_another_farmers_field
+ - Tests\Feature\Farmer\FieldTest::test_farmer_can_create_field
+ - Tests\Feature\Farmer\FieldTest::test_total_fields_area_cannot_exceed_farm_area
+ - Tests\Feature\Farmer\FieldTest::test_farmer_cannot_add_field_to_another_farmers_farm
+ - Tests\Feature\Farmer\FieldTest::test_show_returns_not_found_message_for_missing_field
+ - Tests\Feature\Farmer\PlantProductionTest::test_farmer_can_create_production_with_first_stage_by_default
+ - Tests\Feature\Farmer\PlantProductionTest::test_field_cannot_have_two_active_productions
+ - Tests\Feature\Farmer\PlantProductionTest::test_variety_of_another_crop_is_rejected
+ - Tests\Feature\Farmer\PlantProductionTest::test_changing_stage_records_history
+ - Tests\Feature\Farmer\PlantProductionTest::test_harvest_closes_production_and_allows_a_new_one
+ - Tests\Feature\Farmer\PlantProductionTest::test_farmer_cannot_add_production_to_another_farmers_field
+ - Tests\Feature\Farmer\PlantProductionTest::test_crop_used_by_active_production_cannot_be_deleted

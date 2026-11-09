@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Farmer\Farm;
 
+use App\Enums\ActivityType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,7 +35,7 @@ class UpdateFarmRequest extends FormRequest
             'longitude'            => ['sometimes', 'numeric', 'between:-180,180'],
             'area'                 => ['sometimes', 'numeric', 'gt:0', 'max:99999999'],
             'location_description' => ['nullable', 'string', 'max:500'],
-
+            'activity_type' => ['sometimes', Rule::enum(ActivityType::class)],
         ];
     }
 }

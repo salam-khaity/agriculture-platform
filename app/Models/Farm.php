@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Enums\ActivityType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,7 @@ class Farm extends Model
         'longitude',
         'area',
         'location_description',
+        'activity_type',
     ];
 
     protected function casts(): array
@@ -31,8 +33,11 @@ class Farm extends Model
             'latitude'  => 'float',
             'longitude' => 'float',
             'area'      => 'float',
+            'activity_type' => ActivityType::class,
         ];
     }
+
+    protected $attributes = ['activity_type' => 'plant'];
 
     public function owner(): BelongsTo
     {
